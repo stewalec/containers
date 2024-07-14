@@ -1,0 +1,16 @@
+version: "3.0"
+
+services:
+  minio:
+    container_name: minio
+    image: quay.io/minio/minio
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    networks:
+      - reverse_proxy
+
+networks:
+  reverse_proxy:
+    external: true

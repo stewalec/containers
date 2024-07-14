@@ -1,0 +1,23 @@
+version: "3.0"
+
+services:
+  caddy:
+    container_name: caddy
+    image: localhost/caddy
+    build: .
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    env_file: .env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./data:/data
+      - ./config:/config
+    networks:
+      - reverse_proxy
+
+networks:
+  reverse_proxy:
+    driver: "bridge"
+    name: reverse_proxy

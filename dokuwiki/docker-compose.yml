@@ -1,0 +1,22 @@
+version: "2.1"
+
+services:
+  dokuwiki:
+    image: lscr.io/linuxserver/dokuwiki:latest
+    container_name: dokuwiki
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/alec/documents/notes/wiki:/config
+    ports:
+      - 8443:443
+    networks:
+      - dokuwiki
+
+networks:
+  dokuwiki:
+    driver: "bridge"
+    name: dokuwiki

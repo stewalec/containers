@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+  ghost:
+    image: ghost:5-alpine
+    container_name: ghost
+    restart: always
+    env_file: .env
+    volumes:
+      - ./data:/var/lib/ghost/content
+    networks:
+      - reverse_proxy
+
+  ghost_db:
+    image: mysql:8.0
+    container_name: ghost_db
+    restart: always
+    env_file: .env
+    volumes:
+      - ./db:/var/lib/mysql
+
+networks:
+  reverse_proxy:
+    external: true

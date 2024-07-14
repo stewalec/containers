@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:1.21-rootless
+    container_name: forgejo
+    restart: always
+    networks:
+      - reverse_proxy
+    volumes:
+      - ./data:/var/lib/gitea
+      - ./config:/etc/gitea
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+networks:
+  reverse_proxy:
+    external: true

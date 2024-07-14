@@ -1,0 +1,39 @@
+{
+	debug
+	admin off
+	email {$EMAIL}
+	acme_dns cloudns {
+        sub_auth_id "{$SUB_AUTH_ID}"
+		auth_password "{$AUTH_PASSWORD}"
+	}
+}
+
+{$DEVDOMAIN}, *.{$DEVDOMAIN} {
+	@web host {$DEVDOMAIN}
+	handle @web {
+		reverse_proxy alecstewart:8080
+	}
+
+	@git host git.{$DEVDOMAIN}
+	handle @git {
+		reverse_proxy forgejo:3000
+	}
+
+	@minio host s3.{$DEVDOMAIN}
+	handle @minio {
+		reverse_proxy minio:9000
+	}
+
+	@console host console.{$DEVDOMAIN}
+	handle @console {
+		reverse_proxy minio:9001
+	}
+
+	@linkding host links.{$DEVDOMAIN}
+	handle @linkding {
+		reverse_proxy linkding:9090
+	}
+}
+{$PRODDOMAIN} {
+    reverse_proxy ghost:2368
+}
